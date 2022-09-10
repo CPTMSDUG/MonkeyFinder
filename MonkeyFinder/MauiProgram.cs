@@ -1,4 +1,6 @@
-﻿using MonkeyFinder.View;
+﻿using Microsoft.Extensions.Logging;
+using MonkeyFinder.Services;
+using MonkeyFinder.View;
 
 namespace MonkeyFinder;
 
@@ -14,8 +16,19 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
 
-		builder.Services.AddSingleton<MainPage>();
+		builder.Logging.AddDebug();
 
-		return builder.Build();
+		builder.Services.AddSingleton<IMonkeyService, OnlineMonkeyService>();
+		builder.Services.AddSingleton<IMap>(Map.Default);
+		builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);
+		builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+        
+		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddSingleton<MonkeysViewModel>();
+
+		builder.Services.AddTransient<MonkeyDetailsViewModel>();
+		builder.Services.AddTransient<DetailsPage>();
+
+        return builder.Build();
 	}
 }

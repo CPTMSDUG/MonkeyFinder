@@ -1,7 +1,55 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MonkeyFinder.View.MainPage">
+             xmlns:model="clr-namespace:MonkeyFinder.Model"
+             xmlns:vm="clr-namespace:MonkeyFinder.ViewModel"
+             x:Class="MonkeyFinder.View.MainPage"
+             x:DataType="vm:MonkeysViewModel">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="NEAR" Command="{Binding NearestCommand}" />
+    </ContentPage.ToolbarItems>
+    
+    <Grid>
+
+        <CollectionView ItemsSource="{Binding Monkeys}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Monkey">
+                    <Frame Padding="5,5,5,5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                            Command="{Binding GoToProfileCommand, Source={RelativeSource AncestorType={x:Type vm:MonkeysViewModel}}}"
+                            CommandParameter="{Binding .}"/>
+                        </Frame.GestureRecognizers>
+                        <HorizontalStackLayout>
+                            <Image Source="{Binding Image}" HeightRequest="100" WidthRequest="100"/>
+
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}" FontSize="24" FontAttributes="Bold"/>
+                                <Label Text="{Binding Location}"/>
+
+                            </VerticalStackLayout>
+
+                        </HorizontalStackLayout>
+                    </Frame>
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <Grid Background="#CDCDCECE" IsVisible="{Binding IsLoading}">
+
+            <VerticalStackLayout Spacing="12" VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True"
+                               WidthRequest="100"
+                               HeightRequest="100" />
+
+                <Label Text="Loading..." HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+        </Grid>
+        
+    </Grid>
     
 </ContentPage>
