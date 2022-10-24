@@ -22,9 +22,10 @@
                             CommandParameter="{Binding .}"/>
                         </Frame.GestureRecognizers>
                         <HorizontalStackLayout>
+                            <Frame CornerRadius="10" Padding="0">
                             <Image Source="{Binding Image}" HeightRequest="100" WidthRequest="100"/>
-
-                            <VerticalStackLayout>
+                            </Frame>
+                            <VerticalStackLayout Padding="10">
                                 <Label Text="{Binding Name}" FontSize="24" FontAttributes="Bold"/>
                                 <Label Text="{Binding Location}"/>
 
